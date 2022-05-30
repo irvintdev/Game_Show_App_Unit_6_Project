@@ -17,5 +17,8 @@ const phrases = [
 ];
 
 function getRandomPhraseAsArray(array) {
-    
+    // This function create an array of characters from a random quote in the phrases array
+    const arrayIndexNumber = Math.floor(Math.random()*array.length);
+    const randomPhrase = array[arrayIndexNumber];
+    return randomPhrase;
 };
