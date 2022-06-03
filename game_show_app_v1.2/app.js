@@ -9,11 +9,11 @@ startGame.addEventListener('click', (e) => {
 });
 
 const phrases = [
-    'It is kind of fun to do the impossible',
-    'It is during our darkest moments that we must focus to see the light',
-    'The journey of a thousand miles begins with one step',
-    'Twenty years from now you will be more dissapointed by the things that you did not do than the ones you did do',
-    'Do not be afraid to give up the good to go for the great',
+    'come fly with me',
+    'the way you look tonight',
+    'fly me to the moon',
+    'just in time',
+    'one for my baby',
 ];
 
 function getRandomPhraseAsArray(array) {
@@ -31,22 +31,38 @@ function addPhraseToDisplay(array) {
     console.log(chosenPhrase);
     const phraseLength = chosenPhrase.length;
     console.log(phraseLength);
+    const ul = document.querySelector('ul');
     for ( let i = 0; i < chosenPhrase.length; i++) {
         if ( chosenPhrase[i] === ' ') {
             let li = document.createElement('li');
             li.textContent = chosenPhrase[i];
             li.className = 'space';
-            console.log(li)
-            phrase.appendChild(li);
+            // console.log(li);
+            ul.appendChild(li);
+            phrase.appendChild(ul);
         } else {
             let li = document.createElement('li');
             li.textContent = chosenPhrase[i];
             li.className = 'letter';
-            console.log(li)
-            phrase.appendChild(li);
+            // console.log(li);
+            ul.appendChild(li);
+            phrase.appendChild(ul);
         }
     }
 }
 
 addPhraseToDisplay(phrases);
 
+function checkLetter(buttonClicked) {
+    const ul = document.querySelector('ul');
+    let items = ul.querySelectorAll('.letter');
+    const matchedLetter = [];
+    for ( let i = 0; i < items.length; i++ ) {
+        let item = items[i].textContent
+        if (item === buttonClicked) {
+            items[i].classList.add('show');
+            matchedLetter.push(buttonClicked);
+        } 
+    }
+    console.log(matchedLetter);
+};
