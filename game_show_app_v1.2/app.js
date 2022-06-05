@@ -1,11 +1,11 @@
 const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 let missed = 0;                // This initializes the missed counter to 0; This variable will be used to keep count of the number of misses
-
+const overlay = document.getElementById('overlay');
 const startGame = document.querySelector('.btn__reset');
+
 startGame.addEventListener('click', (e) => {
-    const hideOverlay = document.getElementById('overlay');
-    hideOverlay.style.display = 'none';
+    overlay.style.display = 'none';
 });
 
 const phrases = [
@@ -56,13 +56,50 @@ addPhraseToDisplay(phrases);
 function checkLetter(buttonClicked) {
     const ul = document.querySelector('ul');
     let items = ul.querySelectorAll('.letter');
-    const matchedLetter = [];
+    let matchedLetter = null;
     for ( let i = 0; i < items.length; i++ ) {
         let item = items[i].textContent
         if (item === buttonClicked) {
             items[i].classList.add('show');
-            matchedLetter.push(buttonClicked);
-        } 
+            matchedLetter = item;
+        }
     }
-    console.log(matchedLetter);
+    return matchedLetter
 };
+
+function checkWin() {
+    const letters = document.getElementsByClassName('letter');
+    const show = document.getElementsByClassName('show');
+    if ( letters.length === show.length) {
+        overlay.className = 'win';
+        overlay.style.display = 'initial';
+        console.log('you won');
+    } else if ( missed >= 5 ) {
+        overlay.className = 'lose';
+        overlay.style.display = 'initial';
+        console.log('you lost');
+    }
+};
+
+qwerty.addEventListener('click', (e) => {
+    const scoreboard = document.querySelector('ol');
+    const lostHeart = document.createElement('li');
+    lostHeart.innerHTML = `<li class="tries"><img src="images/lostHeart.png" height="35px" width="30px"></li>`;
+    let btn = e.target;
+    if ( btn.tagName === 'BUTTON') {
+        let chosenLetter = btn.textContent;
+        btn.className = 'chosen';
+        btn.disabled = true;
+        checkLetter(chosenLetter);
+        if ( checkLetter(chosenLetter) === null) {
+            console.log('lose a heart');
+            missed += 1;
+            console.log(missed);
+            scoreboard.removeChild(scoreboard.firstElementChild);
+            scoreboard.appendChild(lostHeart);
+        }
+    }
+    checkWin();
+
+});
+
